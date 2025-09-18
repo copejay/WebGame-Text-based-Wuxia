@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    display:flex;
+    justify-content:center    
+}
+
+/* #FM_OL{
+    width:500px;
+    height:600px;
+    background-color:#d27f7f;
+} */
+        #FM_OL {
+            /* position: fixed; */
+            position: absolute;
+
+            overflow: hidden; /* 禁止容器内滚动 */
+            touch-action: manipulation; 
+            top: 0;
+            left: 0;
+            /* 1. 占满整个视窗 */
+            width: 100vw;  /* 宽度 = 视窗宽度的100% */
+            height: 100vh; /* 高度 = 视窗高度的100% */
+
+            justify-content:center;
+            display: flex;
+            /* flex-direction: column; */
+
+            /* 2. 移除默认边距和滚动条（可选） */
+            margin: 0;
+            overflow: hidden; /* 防止内容溢出导致滚动条 */
+
+            /* 3. 定位到屏幕左上角（确保无偏移） */
+            /* position: fixed; 固定定位，不随滚动条移动 */
+            /* top: 0;
+            left: 0; */
+
+            /* 4. 层级设置（避免被其他元素覆盖） */
+            z-index: 999; /* 数值越大，层级越高 */
+
+            /* 原始背景色 */
+            background-color: #ede8b3;
+        }
+
+
+#hiddenInput{
+    position: absolute;
+    font-size:100px;
+    top:0;
+    left:0;
+    width: 100vw;  /* 宽度 = 视窗宽度的100% */
+    height: 100vh;
+    opacity:0;
+    pointer-events:none;
+    z-index:-1
+}

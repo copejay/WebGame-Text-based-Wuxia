@@ -1,0 +1,12 @@
+
+
+本项目使用一个listener负责和云服务器进行通信
+
+listener使用ask发起请求
+使用response接收回复
+
+接收到回复之后，使用gift开头向localDb发送信息
+接收localDb请求的格式为，localDb_renew_db，type:,data
+
+
+listener需要管理各个模块的信息更新，talk模块只有被输入才会调用全体广播进行更新，首次加载是挂载在character信息更新之下的

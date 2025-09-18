@@ -1,0 +1,150 @@
+
+
+import { Rectangle } from "./tool/rectangle.js";
+import { AU_Button } from "./tool/buttonPop.js";
+
+import event_bus from "/static/js/event_bus.js"
+
+
+export class PersonPop{
+    constructor(site,size,data,scene){
+        this.site=site;
+        this.size=size;
+        this.data=data;
+        this.fight_data=[];
+        this.scene=scene;
+        this.create();
+        this.display();
+
+    }
+
+
+    create(){
+        this.PersonPop=this.scene.add.container();
+
+        const wh=[this.size[0]*0.88,this.size[1]*0.45];
+        const xy=[this.site[0]+this.size[0]*0.06,this.site[1]+this.size[1]*0.2];
+        this.button_list=[];
+
+        this.rect=new Rectangle(xy[0],xy[1],wh[0],wh[1],this.scene); 
+        this.PersonPop.add(this.rect.rectangle);
+
+
+        const math_name=Math.ceil(wh[1]*0.09);
+
+        this.name_text=this.scene.add.text(xy[0]+wh[1]*0.1,xy[1]+wh[1]*0.1,"name",{
+            fontSize:math_name,
+            color:"#000",
+            align:'center'
+        });
+        this.PersonPop.add(this.name_text);
+
+        const math_describe=Math.ceil(wh[1]*0.06);
+
+        this.describe_text=this.scene.add.text(xy[0]+wh[1]*0.15,xy[1]+wh[1]*0.3,"describe",{
+            fontSize:math_describe,
+            color:"#000",
+            align:'center'
+        });
+        this.PersonPop.add(this.describe_text);
+
+
+        this.describe_text_two=this.scene.add.text(xy[0]+wh[1]*0.15,xy[1]+wh[1]*0.42,"",{
+            fontSize:math_describe,
+            color:"#000",
+            align:'center'
+        });
+        this.PersonPop.add(this.describe_text_two);
+
+
+        this.out_button=new AU_Button(xy[0]+wh[0]*0.9,xy[1]+wh[1]*0.1,wh[0]*0.1,wh[0]*0.1,"X",this.scene);
+        this.PersonPop.add(this.out_button.au_button);
+
+
+        for (let i = 0; i < 3; i++) {
+            const x=xy[0]+wh[0]*0.2;
+            const y=xy[1]+wh[1]*0.8;
+            const w=wh[0]*0.2;
+            const h=wh[1]*0.2;
+
+            this.button_list.push(new AU_Button(x+w*1.2*i,y,w,h,"NULL",this.scene));
+            this.PersonPop.add(this.button_list[i].au_button);
+        }
+        this.renew();
+        this.PersonPop.setDepth(10);
+        this.addListen();
+
+    }
+
+
+    addListen(){
+        let npc=this.fight_data;
+        let player=["古月方源",100,20,10,1];
+        event_bus.on("Pop_fight_loading_over",()=>{
+            npc=this.fight_data;
+            event_bus.emit("Pop_fight_begin",[npc,player]);
+            console.log(`personPop战斗人物数据${npc},${player}`)
+
+        })
+
+        event_bus.on("_Pop_person_click",(data)=>{
+            console.log(`personPop内部接收战斗指令${data}`);
+            if(data=="攻击"){
+                // event_bus.emit("Pop_fight_begin",[npc,player]);
+                // event_bus.emit("Pop_beg_fightPerson_data","fightPerson");
+                event_bus.once("localDb_fightPerson_data",(person)=>{
+                    player=person;
+                    event_bus.emit("Pop_fight_loading_over");
+                })
+                event_bus.emit("Pop_beg_fightPerson_data","fightPerson");
+                // event_bus.emit("Pop_beg_fightNpc_data","fightNpc");
+            }
+            else if(data=="查看"){
+                event_bus.emit("Pop_action_message","查看");
+            }
+            else if(data=="打招呼"){
+                event_bus.emit("Pop_action_message","打招呼");
+            }
+
+        })
+    }
+
+    renew(){
+        const name_list=["攻击","查看","打招呼"];
+        name_list.forEach((name,num)=>{
+            this.button_list[num].re_text(name);
+        });
+    }
+
+    display(){
+        this.PersonPop.visible=false;
+    }
+
+    destroy(){
+        this.PersonPop.visible=false;
+    }
+
+
+    run(data){
+        console.log(`pop接收数据:${data}`)
+
+        const name=`【${data[1]}】`;
+        const describe=data[2];
+        this.data=data;
+        this.fight_data=[data[1],data[3],data[4],data[5]];
+
+        this.name_text.setText(name);
+
+        this.describe_text.setText("");
+        this.describe_text_two.setText("");
+
+        if (describe.length<=16){
+            this.describe_text.setText(describe);
+        }else{
+            this.describe_text.setText(describe.substring(0,16));
+            this.describe_text_two.setText(describe.substring(16));
+        }
+        this.PersonPop.visible=true;
+    }
+
+}

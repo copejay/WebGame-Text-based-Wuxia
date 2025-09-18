@@ -1,0 +1,4 @@
+
+
+在bloodScreen直观模块里面
+实现了localDb和personControl，本地数据库和人物操作总控

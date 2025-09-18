@@ -1,0 +1,10 @@
+
+
+popScreen模块是用户直接操作的模块
+具有调用数据更改的功能
+
+文件形式存在的数据模块级别的弹窗，inputPop输入弹窗，personPop是npc模块的专属弹窗
+
+由clickScreen调用唤起的数据功能弹窗，比如背包，人物状态
+
+重点：function_pop
