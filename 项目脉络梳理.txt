@@ -1,0 +1,36 @@
+项目总体架构
+
+数据库:instance
+app_socket{
+        子模块：module_py模块
+        前端：static模块}
+
+python的flask作为后端框架
+js的phaser用来制作前端
+
+【前端脉络梳理】
+一开始通过control_version文件加载全部（没必要）flask会自动更新
+
+最上层五个scene
+开始界面，登录，注册，主要游戏场景，聊天场景（废弃未删除，进入游戏场景不好进行切换，一切只能再游戏场景内实现）
+
+场景之间通过start，sleep进行切换，前面三个比较简单，切换无问题，主要场景不方便destroy
+
+主要游戏场景的具体架构，按照从上到下建立了多个模块
+特别将move模块单独独立出来（一开始就这样，后来就懒得改了）
+按照屏幕排序从上到下排列，talk，small，person，text，二合一（move，click），blood，allControl(简写ac)
+模块的数据依赖，建立了本地数据管理，在blood里面实现，负责获取外部数据和分发内部数据
+
+各个功能模块负责一部分功能，模块之间的协作通过event_bus进行通信，具有on，off，once三种订阅方式
+
+这是一个联网游戏，js作为前端，在db_io文件夹设置了一个listen模块负责和后端进行通信，内部通信使用event_bus,外部通信使用socket
+
+【后端脉络梳理】
+
+后端使用python进行编写，主要使用flask库，基本都编写在socket模块里面，socket模块里面的db_control负责编写各种数据库操作，在socket_handler文件里面进行引用和使用，message_service没有什么用
+
+在socket_all文件里面引用其它两个类，负责调用内部函数和编写外部接口
+编写好之后被app_socket进行引用（还有一个app.py文件，是使用不同通信方式，已经废弃），集成到flask的app里面
+
+
+
