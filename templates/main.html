@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport"  initial-scale=1.0, user-scalable=no, viewport-fit=cover,maximum-scale=1.0, minimum-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> -->
+    <title>封魔OL</title>
+    <script src="/static/cool_ku/phaser.js"></script>
+    <script src="/static/cool_ku/socket.io.min.js"></script>
+    <script src="/static/cool_ku/rexuiplugin.min.js"></script>
+    <script>
+    const deviceId= localStorage.getItem('deviceId')||Math.random().toString(36).substring(2,15);
+    localStorage.setItem('deviceId',deviceId);
+    const socket=io("{{socketio_url}}",{
+        query:{
+            deviceId:deviceId
+        }
+    });
+    </script>
+
+    <script type=module src="/static/js/control_version.js?v=1"></script>
+</head>
+
+<body>
+    <div id="FM_OL"></div>
+
+    <!-- <script src="/static/cool_ku/phaser.js"></script>
+    <script src="/static/cool_ku/socket.io.min.js"></script>
+    <script type=module src="/static/js/control_version.js?v=1"></script> -->
+
+</body>
+
+</html>
