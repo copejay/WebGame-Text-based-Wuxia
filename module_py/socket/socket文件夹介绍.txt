@@ -1,0 +1,11 @@
+
+
+socket：实现了socket通信以及具体功能操作
+主要文件夹：
+db_control:创建了各个表，以及各个表的操作方法，里面实现了一个表的总控制器类
+socket_all：负责和前端进行通信，负责具体的接口实现
+
+y_new_socket_handlers.py：引入表的总控制器，接收参数，进行逻辑判断，调用表的操作方法实现具体功能
+(socket_handle.py)：旧的handlers文件
+
+z_player_handlers.py：本来打算分割各个handler，没搞成
